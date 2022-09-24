@@ -25,10 +25,27 @@ const UserSchema = new Schema({
       ref: 'Thoughts'
     }],
 
-    friends: {
-      type: String,
-      default: 'Large'
-    }
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    },
+
+    {
+    toJSON: {
+      virtuals: true,
+      id: false,
+  }
+    },
+  
+  );
+
+  // calucaltes user friend count
+
+  UserSchema.virtual("friendCount").get(function () {
+    return this.friends.length;
   });
 
   // create the user model using the UserSchema
