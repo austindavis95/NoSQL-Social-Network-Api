@@ -4,7 +4,7 @@ const thoughtsController = {
     // get all thoughts
     getAllThoughts(req, res) {
       Thoughts.find({})
-        .then(dbThoughtsData => res.json(dbUserData))
+        .then(dbUserData => res.json(dbUserData))
         .catch(err => {
           console.log(err);
           res.status(400).json(err);
@@ -31,12 +31,22 @@ const thoughtsController = {
         },
 
        // creteThoughts({})
-    // update thoughts by id
+    createThoughts({ params }, res) {
+      Thoughts.create({})
+       .then(dbUserData => {
+         if (!dbUserData) {
+           res.status(404).json({ message: 'No thoughts with this id!' });
+           return;
+         }
+         res.json(dbUserData);
+       })
+       .catch(err => res.status(400).json(err));
+     },
 
     updateThoughts({ params, body }, res) {
       Thoughts.findOneAndUpdate({ _id: params.id }, body, { new: true })
-       .then(dbThoughtsData => {
-         if (!dbUThoughtsData) {
+       .then(dbUserData => {
+         if (!dbUserData) {
            res.status(404).json({ message: 'No Thoughts found with this id!' });
            return;
          }
@@ -46,7 +56,7 @@ const thoughtsController = {
     },
 
     // delete user
-    deleteUser({ params }, res) {
+    deleteThoughts({ params }, res) {
      User.findOneAndDelete({ _id: params.id })
       .then(dbUserData => {
         if (!dbUserData) {
@@ -56,7 +66,31 @@ const thoughtsController = {
         res.json(dbUserData);
       })
       .catch(err => res.status(400).json(err));
-    }
+    },
+
+    addReactions({ params }, res) {
+      User.findOneAndUpdate({ _id: params.id }, {$addToSet: {reactions: params.reactionsId}}, { new: true })
+       .then(dbUserData => {
+         if (!dbUserData) {
+           res.status(404).json({ message: 'No reactions found with this id!' });
+           return;
+         }
+         res.json(dbUserData);
+       })
+       .catch(err => res.status(400).json(err));
+    },
+
+    deleteReactions({ params }, res) {
+      User.findOneAndUpdate({ _id: params.id }, {$pull: {reactions: params.reactionsId}}, { new: true })
+       .then(dbUserData => {
+         if (!dbUserData) {
+           res.status(404).json({ message: 'No reactions found with this id!' });
+           return;
+         }
+         res.json(dbUserData);
+       })
+       .catch(err => res.status(400).json(err));
+    },
   }
 
-module.exports = userController;
+module.exports = thoughtsController;
