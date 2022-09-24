@@ -4,4 +4,6 @@ const userRoutes = require('./user-routes');
 // add prefix of `/user` to routes created in `user-routes.js`
 router.use('/user', userRoutes);
 
+//router.thoughts('/thoughts,')
+
 module.exports = router;
