@@ -3,13 +3,13 @@ const { Schema, model } = require('mongoose');
 const UserSchema = new Schema({
     user: {
       type: String,
-      required: "Username is required",
+      required: true,
       trim: true,
       unique: true,
     },
     email: {
       type: String,
-      required: "Valid email is required",
+      required: true,
       unique: true,
       validate: {
         validator: function(v) {

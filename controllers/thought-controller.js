@@ -57,7 +57,7 @@ const thoughtsController = {
 
     // delete user
     deleteThoughts({ params }, res) {
-     User.findOneAndDelete({ _id: params.id })
+     Thoughts.findOneAndDelete({ _id: params.id })
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No user found with this id!' });
